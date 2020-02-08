@@ -36,6 +36,6 @@ ggplot(grouped_Data,aes(x=UniqueCarrier,y=Delay,fill=Direction)) +
 ```
 
 <ins>Conclusion</ins>
-&nbsp;
+<br>
 From the graph, it is reasonable to conclude that their is not any significant difference in flight delays among the top 5 major airlines flying out of Austin. The exception is Southwest Airlines which has the lowest arrival delay. The reason for this could be that many of Southwest flight into Austin are in-state flights and thus have less time for delays to occur.
 
