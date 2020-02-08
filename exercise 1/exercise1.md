@@ -13,13 +13,16 @@ Data visualization: flights at ABIA
 -----------------------------------
 
 ``` r
+# Group data by airline and calculate mean arrival/departure delay
 grouped_Data <- mydata %>% group_by(UniqueCarrier) %>% summarise(mean_DepDelay=mean(DepDelay,na.rm=TRUE),mean_ArrDelay=mean(ArrDelay,na.rm=TRUE), count=n())
+#Get subset of top 5 airlines in terms of number of flights.
 grouped_Data <- grouped_Data %>% arrange(desc(count))
 grouped_Data <- grouped_Data %>% slice(1:5)
+
+#Flatten data to seperate arrival and departure delay
 grouped_Data <- grouped_Data %>% gather("Direction","Delay",-count,-UniqueCarrier)
 
 grouped_Data$UniqueCarrier <- recode(grouped_Data$UniqueCarrier, AA="American", WN="Southwest",B6="JetBlue", YV="Mesa", CO="Continental")
-
 ggplot(grouped_Data,aes(x=UniqueCarrier,y=Delay,fill=Direction)) +
   geom_col(position = "dodge") +
   ggtitle("Austin Flight Arrival/Departure Delay by Airline")+
@@ -31,7 +34,7 @@ ggplot(grouped_Data,aes(x=UniqueCarrier,y=Delay,fill=Direction)) +
 <ins>
 Conclusion
 </ins>
-From the graph, it is reasonable to conclude that their is not any
+<br> From the graph, it is reasonable to conclude that their is not any
 significant difference in flight delays among the top 5 major airlines
 flying out of Austin. The exception is Southwest Airlines which has the
 lowest arrival delay. The reason for this could be that many of
