@@ -50,10 +50,17 @@ creatinine = read.csv("creatinine.csv",header=TRUE)
 lm1 = lm(creatclear~age,data = creatinine)
 
 #plug in age 55 to linear model to get expected creatine clearance rate
-as.numeric(coef(lm1)[1]) + (55 * as.numeric(coef(lm1)[2])) 
+ 
+coef(lm1)
 ```
 
-    ## [1] 113.723
+    ## (Intercept)         age 
+    ## 147.8129158  -0.6198159
 
-1.  Based on the linear model we can expect a creatine clearance rate of
-    113.723 ml/minute
+``` r
+cleareance_rate55 = as.numeric(coef(lm1)[1]) + (55 * as.numeric(coef(lm1)[2]))
+```
+
+1.  Based on the linear model we can expect a creatine clearance rate
+    of  
+    147.813 + (55\*-0.6198) = **113.723 ml/minute**.
