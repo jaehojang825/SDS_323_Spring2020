@@ -63,8 +63,10 @@ ggplot(creatinine) +
   geom_point(mapping=aes(x=age,y=creatclear))
 ```
 
-![](exercise1_files/figure-markdown_github/unnamed-chunk-3-1.png) 1.
-Based on the linear model we can expect a creatine clearance rate of  
-147.813 + (55\*-0.6198) = **113.723 ml/minute**.
+![](exercise1_files/figure-markdown_github/unnamed-chunk-3-1.png)
 
-1.  Creatinine clearance rate decreases by **0.6198 ml/minute per year**
+1.  Based on the linear model we can expect a creatine clearance rate
+    of  
+    147.813 + (55\*-0.6198) = **113.723 ml/minute**.
+
+2.  Creatinine clearance rate decreases by **0.6198 ml/minute per year**
