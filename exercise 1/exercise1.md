@@ -72,8 +72,15 @@ ggplot(creatinine) +
 2.  As age increases creatinine clearance rate decreases by **0.6198
     ml/minute per year**
 
-3.  E(Creatinine clearance rate \| Age = 40) = 147.813 + (40*-0.6198) =
-    123.02 E(Creatinine clearance rate \| Age = 60) = 147.813 +
-    (60*-0.6198) = 110.624 135 - 123.0203 = 11.98 112 - 110.624 = 1.376
-    Because the residual is higher, the 40-year-old is healthier for his
-    age than the 60-year-old.
+3.  E(Creatinine clearance rate \| Age = 40) = 147.813 + (40\*-0.6198) =
+    123.02
+
+E(Creatinine clearance rate \| Age = 60) = 147.813 + (60\*-0.6198) =
+110.624
+
+135 - 123.0203 = 11.98
+
+112 - 110.624 = 1.376
+
+Because the residual is higher, the 40-year-old is healthier for his age
+than the 60-year-old.
