@@ -47,6 +47,61 @@ creatinine = read.csv("creatinine.csv",header=TRUE)
 lm1 = lm(creatclear~age,data = creatinine)
 
 #plug in age 55 to linear model to get expected creatine clearance rate
-as.numeric(coef(lm1)[1]) + (55 * as.numeric(coef(lm1)[2])) 
+ 
+coef(lm1)
+cleareance_rate55 = as.numeric(coef(lm1)[1]) + (55 * as.numeric(coef(lm1)[2]))
+ggplot(creatinine) +
+  geom_point(mapping=aes(x=age,y=creatclear))
+
 ```
-1. Based on the linear model we can expect a creatine clearance rate of 113.723 ml/minute
+  
+1. Based on the linear model we can expect a creatine clearance rate of  
+147.813 + (55*-0.6198) = **113.723 ml/minute**.
+
+2.  As age increases creatinine clearance rate decreases by **0.6198 ml/minute per year**
+
+3. 
+
+E(Creatinine clearance rate | Age = 40) = 147.813 + (40*-0.6198) = 123.02
+
+E(Creatinine clearance rate | Age = 60) = 147.813 + (60*-0.6198) = 110.624
+
+135 - 123.0203 = 11.98
+
+112 - 110.624 = 1.376
+
+Because the residual is higher, the 40-year-old is healthier for his age than the 60-year-old.
+
+## Green Buildings
+
+I agree with the conclusions of her on-staff "data guru". As you can see from the following two graphs, Green Buildings (Buildings which are LEED- or EnergyStar-certified) are more likely to be "Class A" buildings whereas Non-Green buildings often are "Class B" or Class C" buildings. Class A buildings are the highest quality of buildings on the market and thus make for good investments.
+
+```{r}
+building_data = read.csv("greenbuildings.csv",header=TRUE)
+building_data = building_data[building_data$leasing_rate > 10.00,]
+building_data = mutate(building_data,rent_diff = (Rent-cluster_rent))
+building_data$class =ifelse(building_data$class_a == 1,"a",ifelse(building_data$class_b == 1,"b","c"))
+building_data$green_rating = recode(building_data$green_rating,`1`="Green Building", `0`="Non-Green Building")
+
+ggplot(building_data[building_data$green_rating=="Green Building",],aes(x=class))+
+  geom_bar()+
+  ggtitle("Green Building Class Distributuion")
+
+ggplot(building_data[building_data$green_rating!="Green Building",],aes(x=class))+
+  geom_bar()+
+  ggtitle("Non-Green Building Class Distributuion")
+```
+
+Instead of just comparing the difference in median rent/sq. ft charged to tenants like the "data guru". I decided to compare the difference between the rent/sq ft. of each building with the corresponding cluster rent (Labled in the below graph as "rent_diff"). This way, we can calculate how high the rent is relative to other buildings in its cluster.
+
+```{r warning=FALSE}
+building_data = mutate(building_data,total_cost = Gas_Costs + Electricity_Costs)
+ggplot(building_data, aes(x=rent_diff, color=green_rating))+
+  geom_density()+
+  scale_x_continuous(limits = c(-25, 50))
+
+
+  
+```
+
+From the density plot, we can conclude that density of Green Buildings who charge higher rent to their tenants (relative to other buildings in their cluster) is higher than the density of Non-Green Buildings. As a result, Green Buildings can generate more revenue than Non-Green Buildings.
