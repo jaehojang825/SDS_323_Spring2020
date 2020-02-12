@@ -150,7 +150,7 @@ Solve for P to get the max price in terms of the wholesale cost
 
 **P = 81C / 31 **
 
-<ins>Example<ins/>
+Example:
 
 If we let the wholesale cost C = 1 then the price we would charge for a gallon of milk would be
 
