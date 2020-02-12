@@ -154,7 +154,7 @@ Example:
 
 If we let the wholesale cost C = 1 then the price we would charge for a gallon of milk would be
 
-P = 81/311 = **$2.61**
+P = 81/31 = **$2.61**
 
 To calculate the net profit we plug P into Equation 3 to get
 
