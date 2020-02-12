@@ -191,4 +191,4 @@ Set the equation equal to 0 to find the critical point
 
 Solve for P to get the max price in terms of the wholesale cost
 
-&lt;mark&lt;P = 81C / 31</mark>
+<mark>P = 81C / 31 </mark>
