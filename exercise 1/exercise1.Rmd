@@ -132,7 +132,7 @@ log(Q) = 4.7 - 1.62 * log(P) =>
 
 Plugging in Equation 2 into Equation 1 we get
 
-N = (P-C) * (110 * P^-1.62)
+ (Equation 3) N = (P-C) * (110 * P^-1.62)
 
 Now to find the max of the equation it easier to take the log 
 
@@ -148,6 +148,20 @@ Set the equation equal to 0 to find the critical point
 
 Solve for P to get the max price in terms of the wholesale cost
 
-<mark>P = 81C / 31 </mark>
+**P = 81C / 31 **
+
+<ins>Example<ins/>
+
+If we let the wholesale cost C = 1 then the price we would charge for a gallon of milk would be
+
+P = 81/311 = **$2.61**
+
+To calculate the net profit we plug P into Equation 3 to get
+
+N = (2.61 - 1) * 110 * 2.61^-1.62
+
+Net Profit = **$37.43**
+
+
 
 
