@@ -140,3 +140,55 @@ who charge higher rent to their tenants (relative to other buildings in
 their cluster) is higher than the density of Non-Green Buildings. As a
 result, Green Buildings can generate more revenue than Non-Green
 Buildings.
+
+Milk Prices
+-----------
+
+P = Price Charged Q = Quantity Sold N = Profit C = Cost
+
+(Equation 1) N = Q \* (P - C)
+
+= (P-c) \* f(P) because Q is a function P
+
+To find f(p) we run a regression on the equation Q = KP^E where E is
+elasticity and K is a constant:
+
+``` r
+milk_data = read.csv("milk.csv")
+
+lm(log(sales) ~ log(price),data=milk_data)
+```
+
+    ## 
+    ## Call:
+    ## lm(formula = log(sales) ~ log(price), data = milk_data)
+    ## 
+    ## Coefficients:
+    ## (Intercept)   log(price)  
+    ##       4.721       -1.619
+
+Following the regression we have the equation:
+
+log(Q) = 4.7 - 1.62 \* log(P) =&gt;
+
+(Equation 2) Q = e^4.7 \* P^-1.62
+
+Plugging in Equation 2 into Equation 1 we get
+
+N = (P-C) \* (110 \* P^-1.62)
+
+Now to find the max of the equation it easier to take the log
+
+n(P) = log(P-C) + log(110) - 1.62 \* log(P)
+
+Take the first derivative.
+
+n’(P) = 1/(P-C) - 1.62/P
+
+Set the equation equal to 0 to find the critical point
+
+0 = 1/(P-C) - 1.62/P
+
+Solve for P to get the max price in terms of the wholesale cost
+
+&lt;mark&lt;P = 81C / 31</mark>
