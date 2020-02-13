@@ -99,9 +99,14 @@ thus make for good investments.
 
 ``` r
 building_data = read.csv("greenbuildings.csv",header=TRUE)
+
+#Filter Rows with Leasing Rate Less Than 10%
 building_data = building_data[building_data$leasing_rate > 10.00,]
-building_data = mutate(building_data,rent_diff = (Rent-cluster_rent))
+
+#Create Class Column
 building_data$class =ifelse(building_data$class_a == 1,"a",ifelse(building_data$class_b == 1,"b","c"))
+
+#Recode green_rating column to strings
 building_data$green_rating = recode(building_data$green_rating,`1`="Green Building", `0`="Non-Green Building")
 
 ggplot(building_data[building_data$green_rating=="Green Building",],aes(x=class))+
@@ -127,7 +132,9 @@ calculate how high the rent is relative to other buildings in its
 cluster.
 
 ``` r
-building_data = mutate(building_data,total_cost = Gas_Costs + Electricity_Costs)
+#Create rent_diff column by taking difference of Rent and Mean Cluster Rent
+building_data = mutate(building_data,rent_diff = (Rent-cluster_rent))
+
 ggplot(building_data, aes(x=rent_diff, color=green_rating))+
   geom_density()+
   scale_x_continuous(limits = c(-25, 50))
