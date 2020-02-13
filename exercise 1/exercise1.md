@@ -151,9 +151,9 @@ Buildings.
 Milk Prices
 -----------
 
-P = Price Charged Q = Quantity Sold N = Profit C = Cost
+P = Price Charged, Q = Quantity Sold, N = Profit, C = Cost
 
-(Equation 1) N = Q \* (P - C)
+N = Q \* (P - C) **(Equation 1)**
 
 = (P-c) \* f(P) because Q is a function P
 
@@ -178,11 +178,11 @@ Following the regression we have the equation:
 
 log(Q) = 4.7 - 1.62 \* log(P) =&gt;
 
-(Equation 2) Q = e^4.7 \* P^-1.62
+Q = e^4.7 \* P^-1.62 **(Equation 2)**
 
-Plugging in Equation 2 into Equation 1 we get
+Plugging in **Equation 2** into **Equation 1** we get
 
-(Equation 3) N = (P-C) \* (110 \* P^-1.62)
+N = (P-C) \* (110 \* P^-1.62) **(Equation 3)**
 
 Now to find the max of the equation it easier to take the log
 
@@ -207,7 +207,7 @@ gallon of milk would be
 
 P = 81/31 = **$2.61**
 
-To calculate the net profit we plug P into Equation 3 to get
+To calculate the net profit we plug P into **Equation 3** to get
 
 N = (2.61 - 1) \* 110 \* 2.61^-1.62
 
