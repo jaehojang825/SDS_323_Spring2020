@@ -73,6 +73,10 @@ rmse_grid_65 = foreach(K=k_grid65, .combine='c') %do% {
   
   fit_KNN_model(K,x_train_65, x_test_65, y_train_65,y_test_65)
 }
+
+```
+
+```{r comment=NA}
 ggplot()+
   geom_point(data.frame(K=k_grid_350,RMSE=rmse_grid_350),mapping=aes(K,RMSE)) +
   ggtitle(("RMSE vs K for 350 Trim"))
@@ -85,11 +89,9 @@ ggplot()+
   ggtitle(("RMSE vs K for 65 AMG Trim"))
 
 minK_65 = data.frame(x=k_grid65,y=rmse_grid_65) %>% subset(y == min(rmse_grid_65))
-print(cat("The KNN model with the minimum RMSE is fitted with K =",minK_65[1,1], "for a trim level of 65 AMG."))
-
+cat("The KNN model with the minimum RMSE is fitted with K =",minK_65[1,1], "for a trim level of 65 AMG.")
 ```
 
-From the graphs the optimal K value is 13 for 350 trim and 7 for 65 AMG trim.
 
 
 Lastly, plot both models over the test data.
@@ -106,7 +108,7 @@ ggplot(data=D_test_350) +
   geom_point(mapping = aes(x=mileage, price, color = "lightgrey")) +
   geom_point(mapping = aes(x=mileage, y= ypred_knn, color="red") ) +
   theme_bw()+
-  ggtitle("KNN Model (k=13) for Price vs Mileage for 350M Trim")+
+  ggtitle("KNN Model for Price vs Mileage for 350M Trim")+
   scale_color_manual(values=c("lightgrey","red"), labels=c("Data", "Predictions"))+ 
   scale_x_continuous(labels = scales::comma)
 
@@ -114,7 +116,7 @@ ggplot(data=D_test_65) +
   geom_point(mapping = aes(x=mileage, price, color = "lightgrey")) +
   geom_point(mapping = aes(x=mileage, y= ypred_knn, color="red") ) +
   theme_bw()+
-  ggtitle("KNN Model (k=7) for Price vs Mileage for 65 AMG Trim")+
+  ggtitle("KNN Model for Price vs Mileage for 65 AMG Trim")+
   scale_color_manual(values=c("lightgrey","red"), labels=c("Data", "Predictions"))+ 
   scale_x_continuous(labels = scales::comma)
 
