@@ -68,19 +68,22 @@ rmse_grid_65 = foreach(K=k_grid65, .combine='c') %do% {
   
   fit_KNN_model(K,x_train_65, x_test_65, y_train_65,y_test_65)
 }
+```
+
+``` r
 ggplot()+
   geom_point(data.frame(K=k_grid_350,RMSE=rmse_grid_350),mapping=aes(K,RMSE)) +
   ggtitle(("RMSE vs K for 350 Trim"))
 ```
 
-![](exercise2_files/figure-gfm/unnamed-chunk-4-1.png)<!-- -->
+![](exercise2_files/figure-gfm/unnamed-chunk-5-1.png)<!-- -->
 
 ``` r
 minK_350 = data.frame(x=k_grid_350,y=rmse_grid_350) %>% subset(y == min(rmse_grid_350))
 cat("The KNN model with the minimum RMSE is fitted with K =",minK_350[1,1], "for a trim level of 350." )
 ```
 
-    ## The KNN model with the minimum RMSE is fitted with K = 76 for a trim level of 350.
+    The KNN model with the minimum RMSE is fitted with K = 26 for a trim level of 350.
 
 ``` r
 ggplot()+
@@ -88,17 +91,14 @@ ggplot()+
   ggtitle(("RMSE vs K for 65 AMG Trim"))
 ```
 
-![](exercise2_files/figure-gfm/unnamed-chunk-4-2.png)<!-- -->
+![](exercise2_files/figure-gfm/unnamed-chunk-5-2.png)<!-- -->
 
 ``` r
 minK_65 = data.frame(x=k_grid65,y=rmse_grid_65) %>% subset(y == min(rmse_grid_65))
-print(cat("The KNN model with the minimum RMSE is fitted with K =",minK_65[1,1], "for a trim level of 65 AMG."))
+cat("The KNN model with the minimum RMSE is fitted with K =",minK_65[1,1], "for a trim level of 65 AMG.")
 ```
 
-    ## The KNN model with the minimum RMSE is fitted with K = 38 for a trim level of 65 AMG.NULL
-
-From the graphs the optimal K value is 13 for 350 trim and 7 for 65 AMG
-trim.
+    The KNN model with the minimum RMSE is fitted with K = 40 for a trim level of 65 AMG.
 
 Lastly, plot both models over the test data.
 
@@ -115,22 +115,22 @@ ggplot(data=D_test_350) +
   geom_point(mapping = aes(x=mileage, price, color = "lightgrey")) +
   geom_point(mapping = aes(x=mileage, y= ypred_knn, color="red") ) +
   theme_bw()+
-  ggtitle("KNN Model (k=13) for Price vs Mileage for 350M Trim")+
+  ggtitle("KNN Model for Price vs Mileage for 350M Trim")+
   scale_color_manual(values=c("lightgrey","red"), labels=c("Data", "Predictions"))+ 
   scale_x_continuous(labels = scales::comma)
 ```
 
-![](exercise2_files/figure-gfm/unnamed-chunk-5-1.png)<!-- -->
+![](exercise2_files/figure-gfm/unnamed-chunk-6-1.png)<!-- -->
 
 ``` r
 ggplot(data=D_test_65) + 
   geom_point(mapping = aes(x=mileage, price, color = "lightgrey")) +
   geom_point(mapping = aes(x=mileage, y= ypred_knn, color="red") ) +
   theme_bw()+
-  ggtitle("KNN Model (k=7) for Price vs Mileage for 65 AMG Trim")+
+  ggtitle("KNN Model for Price vs Mileage for 65 AMG Trim")+
   scale_color_manual(values=c("lightgrey","red"), labels=c("Data", "Predictions"))+ 
   scale_x_continuous(labels = scales::comma)
 ```
 
-![](exercise2_files/figure-gfm/unnamed-chunk-5-2.png)<!-- --> Q2 advice:
+![](exercise2_files/figure-gfm/unnamed-chunk-6-2.png)<!-- --> Q2 advice:
 combine values from land model and house improvement
