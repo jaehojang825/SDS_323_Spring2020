@@ -4,7 +4,7 @@ author: "Ryan Clorfeine"
 date: "2/26/2020"
 output: 
   md_document:
-    variant: markdown_github
+    variant: gfm
 ---
 # Exercise 2
 ```{r message=FALSE, warning=FALSE}
@@ -85,7 +85,7 @@ ggplot()+
   ggtitle(("RMSE vs K for 65 AMG Trim"))
 
 minK_65 = data.frame(x=k_grid65,y=rmse_grid_65) %>% subset(y == min(rmse_grid_65))
-cat("The KNN model with the minimum RMSE is fitted with K =",minK_65[1,1], "for a trim level of 65 AMG.")
+print(cat("The KNN model with the minimum RMSE is fitted with K =",minK_65[1,1], "for a trim level of 65 AMG."))
 
 ```
 
