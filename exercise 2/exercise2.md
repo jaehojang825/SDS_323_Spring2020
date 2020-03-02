@@ -1,5 +1,4 @@
-Exercise 2
-==========
+# Exercise 2
 
 ``` r
 library(tidyverse)
@@ -9,8 +8,7 @@ library(foreach)
 library(scales)
 ```
 
-KNN Practice
-------------
+## KNN Practice
 
 ``` r
 sclass = read.csv("sclass.csv")
@@ -75,14 +73,14 @@ ggplot()+
   ggtitle(("RMSE vs K for 350 Trim"))
 ```
 
-![](exercise2_files/figure-markdown_github/unnamed-chunk-4-1.png)
+![](exercise2_files/figure-gfm/unnamed-chunk-4-1.png)<!-- -->
 
 ``` r
 minK_350 = data.frame(x=k_grid_350,y=rmse_grid_350) %>% subset(y == min(rmse_grid_350))
 cat("The KNN model with the minimum RMSE is fitted with K =",minK_350[1,1], "for a trim level of 350." )
 ```
 
-    ## The KNN model with the minimum RMSE is fitted with K = 13 for a trim level of 350.
+    ## The KNN model with the minimum RMSE is fitted with K = 76 for a trim level of 350.
 
 ``` r
 ggplot()+
@@ -90,14 +88,14 @@ ggplot()+
   ggtitle(("RMSE vs K for 65 AMG Trim"))
 ```
 
-![](exercise2_files/figure-markdown_github/unnamed-chunk-4-2.png)
+![](exercise2_files/figure-gfm/unnamed-chunk-4-2.png)<!-- -->
 
 ``` r
 minK_65 = data.frame(x=k_grid65,y=rmse_grid_65) %>% subset(y == min(rmse_grid_65))
-cat("The KNN model with the minimum RMSE is fitted with K =",minK_65[1,1], "for a trim level of 65 AMG.")
+print(cat("The KNN model with the minimum RMSE is fitted with K =",minK_65[1,1], "for a trim level of 65 AMG."))
 ```
 
-    ## The KNN model with the minimum RMSE is fitted with K = 4 for a trim level of 65 AMG.
+    ## The KNN model with the minimum RMSE is fitted with K = 38 for a trim level of 65 AMG.NULL
 
 From the graphs the optimal K value is 13 for 350 trim and 7 for 65 AMG
 trim.
@@ -122,7 +120,7 @@ ggplot(data=D_test_350) +
   scale_x_continuous(labels = scales::comma)
 ```
 
-![](exercise2_files/figure-markdown_github/unnamed-chunk-5-1.png)
+![](exercise2_files/figure-gfm/unnamed-chunk-5-1.png)<!-- -->
 
 ``` r
 ggplot(data=D_test_65) + 
@@ -134,5 +132,5 @@ ggplot(data=D_test_65) +
   scale_x_continuous(labels = scales::comma)
 ```
 
-![](exercise2_files/figure-markdown_github/unnamed-chunk-5-2.png) Q2
-advice: combine values from land model and house improvement
+![](exercise2_files/figure-gfm/unnamed-chunk-5-2.png)<!-- --> Q2 advice:
+combine values from land model and house improvement
