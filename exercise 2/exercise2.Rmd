@@ -18,7 +18,12 @@ library(scales)
 
 ## KNN Practice
 
+**Goal:** Build two KNN models for 350 and 65 AMG trim Mercedes to predict car price given a car's mileage.
+
+***
+
 First we split the data based on whether the car has a trim level of 350 or 65 AMG. In the plot below we compare price vs mileage for each trim.
+
 ```{r echo=FALSE}
 sclass = read.csv("sclass.csv")
 
