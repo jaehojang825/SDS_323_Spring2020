@@ -36,7 +36,10 @@ ggplot(subset(sclass, trim == "350" | trim =="65 AMG")) +
   facet_wrap(~trim)
 ```
 
-First split the data into training and test sets for both trim data
+As we can see from the above scatterplot, there is a group of 65 AMG cars which have a significantly higher price than the 350 trim cars. This will affect how the two models are built later.
+
+Next we need to  split the data into training and test tests and use the training sets to fit two KNN models. This leads to the question of how to pick the model parameters K for each model. One way to do this is to pick the K which gives the minimum root mean square error (rmse) using the test sets. Below is a plot of RMSE vs K for each model:
+
 ```{r echo=FALSE}
 # Define the training and testing set for 350 trim
 N_350 = nrow(trim_350)
@@ -65,7 +68,6 @@ x_test_65 = select(D_test_65, mileage)
 y_test_65 = select(D_test_65, price)
 ```
 
-Then Plot RMSE vs K graphs to find the K which gives the minimum RMSE for both models
 ```{r echo=FALSE}
 
 rmse = function(y, ypred) {
