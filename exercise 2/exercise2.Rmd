@@ -13,7 +13,7 @@ library(mosaic)
 library(FNN)
 library(foreach)
 library(scales)
-
+library(knitr)
 ```
 
 ## KNN Practice
@@ -36,7 +36,7 @@ ggplot(subset(sclass, trim == "350" | trim =="65 AMG")) +
   facet_wrap(~trim)
 ```
 
-As we can see from the above scatterplot, there is a group of 65 AMG cars which have a significantly higher price than the 350 trim cars. This will affect how the two models are built later.
+As we can see from the above scatterplot, there is a group of 65 AMG cars with 0 mileage which have a significantly higher price than the 350 trim cars. This will affect how the two models are built later.
 
 Next we need to  split the data into training and test tests and use the training sets to fit two KNN models. This leads to the question of how to pick the model parameters K for each model. One way to do this is to pick the K which gives the minimum root mean square error (rmse) using the test sets. Below is a plot of RMSE vs K for each model:
 
@@ -107,9 +107,8 @@ minK_65 = data.frame(x=k_grid65,y=rmse_grid_65) %>% subset(y == min(rmse_grid_65
 cat("The KNN model with the minimum RMSE is fitted with K =",minK_65[1,1], "for a trim level of 65 AMG.")
 ```
 
+Now that we have fitted each model with a K parameter which minimizes RMSE, we can plot both models over its corresponding test data to visualize how the predictions (in red) compared with the actual values (grey points).
 
-
-Lastly, plot both models over the test data.
 ```{r echo=FALSE}
 # fit knn models for optimal k
 knnModel350 = knn.reg(train=x_train_350, test=x_test_350, y = y_train_350, k=minK_350[1,1])
@@ -121,7 +120,7 @@ D_test_65$ypred_knn = knnModel65$pred
 
 ggplot(data=D_test_350) + 
   geom_point(mapping = aes(x=mileage, price), color = "lightgrey") +
-  geom_path(mapping = aes(x=mileage, y= ypred_knn), color="red" ) +
+  geom_path(mapping = aes(x=mileage, y= ypred_knn), color="red") +
   theme_bw()+
   ggtitle("KNN Model for Price vs Mileage for 350M Trim")+
   scale_x_continuous(labels = scales::comma)
@@ -134,4 +133,46 @@ ggplot(data=D_test_65) +
   scale_x_continuous(labels = scales::comma)
  
 ```
+
+The 65 AMG model is always fitted with a higher K value than the 350 trim model. At the beginning of the analysis, it was pointed out that there is a group of outlier  65 AMG trim cars which have significantly higher price and 0 mileage. If we chose a lower K value for the 65 AMG trim model, our predictions would have higher variance because the model would memorize the noise of the outliers. Since the 350 trim model has less extreme outliers choosing a smaller K doesn't lead to as much error as choosing a small K would in the 65 AMG model. Therefore a larger K minimizes RMSE for the 65 AMG model and the oppositie is true for the 350 trim model.
+
+## Saratoga House Prices
+
+**Goal: Build Linear and KNN models which predict Saratoga House Price**
+
+***
+
+```{r echo=FALSE, warning=FALSE}
+data(SaratogaHouses)
+
+n = nrow(SaratogaHouses)
+n_train = round(0.8*n)  # round to nearest integer
+n_test = n - n_train
+
+rmse_vals = do(100)*{
+  
+  # split into train and test cases with the same sample sizes
+  train_cases = sample.int(n, n_train, replace=FALSE)
+  test_cases = setdiff(1:n, train_cases)
+  saratoga_train = SaratogaHouses[train_cases,]
+  saratoga_test = SaratogaHouses[test_cases,]
+  
+  #fit medium model to training data
+  lm_medium = lm(price ~ lotSize + age + livingArea + pctCollege + bedrooms + 
+                 fireplaces + rooms + heating + fuel + centralAir, data=saratoga_train)
+
+  lm_new = lm(price ~ lotSize + age + bedrooms +livingArea + livingArea:rooms + livingArea:bedrooms + bathrooms + waterfront + centralAir , data=saratoga_train)
+  
+  yhat_test_medium = predict(lm_medium, saratoga_test)
+  yhat_test_new = predict(lm_new, saratoga_test)
+  rmse(saratoga_test$price, yhat_test_medium)
+  c(rmse(saratoga_test$price, yhat_test_medium), rmse(saratoga_test$price, yhat_test_new))
+}
+
+kable(data.frame(Medium_Model = colMeans(rmse_vals)[1], New_Model = colMeans(rmse_vals)[2]), row.names = FALSE, format="markdown", align = "c", caption = "Average RMSE for  in-class Medium Model vs New Model")
+
+```
+
+
+
 Q2 advice: combine values from land model and house improvement
