@@ -25,11 +25,11 @@ the test sets. Below is a plot of RMSE vs K for each
 
 ![](exercise2_files/figure-gfm/unnamed-chunk-5-1.png)<!-- -->
 
-    The KNN model with the minimum RMSE is fitted with K = 12 for a trim level of 350.
+    The KNN model with the minimum RMSE is fitted with K = 18 for a trim level of 350.
 
 ![](exercise2_files/figure-gfm/unnamed-chunk-5-2.png)<!-- -->
 
-    The KNN model with the minimum RMSE is fitted with K = 14 for a trim level of 65 AMG.
+    The KNN model with the minimum RMSE is fitted with K = 13 for a trim level of 65 AMG.
 
 Now that we have fitted each model with a K parameter which minimizes
 RMSE, we can plot both models over its corresponding test data to
@@ -59,24 +59,20 @@ Prices**
 
 | Medium\_Model | New\_Model |
 | :-----------: | :--------: |
-|   67262.86    |  65715.35  |
+|   67421.93    |  65920.03  |
 
 The above table shows the root mean square error for the medium model
 created in class vs the RMSE for my model. Compared to the medium model,
-the new model has a lower RMSE.The new model uses the equation:
-
-price = lotSize \* livingArea + age + bedrooms + lotSize:bathrooms +
-roomSize + waterfront + centralAir + newConstruction + landValue:lotSize
-+ livingArea:waterfront +
-    fireplaces:lotSize
+the new model has a lower RMSE.The new model uses the
+    equation:
 
     ##             (Intercept)                 lotSize              livingArea 
-    ##            2.018851e+05            8.908274e+03            1.255550e+02 
+    ##            9.081022e+04            5.142335e+03            1.936180e+02 
     ##                     age                bedrooms                roomSize 
-    ##           -4.787757e+01           -1.173794e+04           -9.324591e+01 
+    ##           -9.183852e+01           -1.231435e+04           -9.464472e+01 
     ##            waterfrontNo            centralAirNo       newConstructionNo 
-    ##           -1.567720e+05           -2.048872e+04            1.995968e+04 
+    ##           -4.631412e+04           -2.048070e+04            2.255443e+04 
     ##      lotSize:livingArea       lotSize:bathrooms       lotSize:landValue 
-    ##           -2.700088e+01            1.547892e+04            4.114323e-01 
+    ##           -2.869637e+01            1.903312e+04            3.919823e-01 
     ## livingArea:waterfrontNo      lotSize:fireplaces 
-    ##           -6.951454e-02           -2.275776e+03
+    ##           -6.669535e+01           -3.289907e+03
