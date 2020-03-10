@@ -25,11 +25,11 @@ the test sets. Below is a plot of RMSE vs K for each
 
 ![](exercise2_files/figure-gfm/unnamed-chunk-5-1.png)<!-- -->
 
-    The KNN model with the minimum RMSE is fitted with K = 38 for a trim level of 350.
+    The KNN model with the minimum RMSE is fitted with K = 37 for a trim level of 350.
 
 ![](exercise2_files/figure-gfm/unnamed-chunk-5-2.png)<!-- -->
 
-    The KNN model with the minimum RMSE is fitted with K = 4 for a trim level of 65 AMG.
+    The KNN model with the minimum RMSE is fitted with K = 14 for a trim level of 65 AMG.
 
 Now that we have fitted each model with a K parameter which minimizes
 RMSE, we can plot both models over its corresponding test data to
@@ -57,14 +57,14 @@ Prices**
 
 -----
 
-# Linear Model
+### Linear Model
 
 The table below shows the rmse of the medium model vs my “hand built”
 model:
 
 | Medium\_Model | New\_Model |
 | :-----------: | :--------: |
-|   66614.64    |  65323.39  |
+|   66933.51    |  65445.56  |
 
 Compared to the medium model, the new model has a lower RMSE. The new
 model uses the equation:
@@ -72,7 +72,7 @@ model uses the equation:
 **Price = lotSize \* livingArea + age + bathrooms:bedrooms + roomSize +
 waterfront + centralAir + newConstruction + landValue:lotSize +
 livingArea:waterfront + rooms + fireplaces:lotSize,
-data=saratoga\_train)**
+data=saratoga\_train**
 
 To improve on the medium model I removed the variables: pct\_college,
 heating, and fuel. I added the variables waterfront and newConstruction.
@@ -84,4 +84,52 @@ variable called roomSize which was calculated by dividing the size of
 the house by the number of rooms. I also added multiple interactions
 which were strong drivers of price. For example, I added an interaction
 between bathrooms and bedrooms, because bathrooms connected to bedrooms
-is important to house buyers.
+is important to house
+buyers.
+
+### KNN Model
+
+``` r
+data = SaratogaHouses %>% select(price,lotSize, livingArea, age, bathrooms, bedrooms, roomSize, rooms, waterfront, newConstruction, centralAir)
+
+# change categorical vars to dummy vars
+data$waterfront = ifelse(SaratogaHouses$waterfront == "Yes",1,0)
+data$newConstruction = ifelse(SaratogaHouses$newConstruction == "Yes",1,0)
+data$centralAir = ifelse(SaratogaHouses$centralAir == "Yes",1,0)
+
+x = data %>% select(-price)
+y = data %>% select(price)
+ 
+# Averages RMSE over 100 train/test splits for each k
+rmse_vals = foreach(K=3:50, .combine='c') %dopar% {
+  rmse_val = do (100) *{
+    train_cases = sample.int(n, n_train, replace=FALSE)
+    test_cases = setdiff(1:n, train_cases)
+    x_train = x[train_cases,]
+    x_test = x[-train_cases,]
+    y_train = y[train_cases,]
+    y_test = y[-train_cases,]
+    
+    scale_factors = apply(x_train, 2, sd)
+    x_train_sc = scale(x_train, scale=scale_factors)
+    x_test_sc = scale(x_test, scale=scale_factors)
+    knnModel = knn.reg(train=x_train_sc, test=x_test_sc, y = y_train, k=K)
+    rmse(y_test, knnModel$pred)
+  }
+  mean(rmse_val$result)
+}
+
+rmse_grid = data.frame(k=3:50, RMSE= rmse_vals)
+k = subset(rmse_grid, RMSE == min(rmse_vals))[1,1]
+ggplot(rmse_grid) +
+  geom_point(aes(k,RMSE)) +
+  ggtitle("RMSE vs K")
+```
+
+![](exercise2_files/figure-gfm/unnamed-chunk-8-1.png)<!-- -->
+
+``` r
+cat("The KNN model is fitted with K =",k, "has an average RMSE of", min(rmse_vals))
+```
+
+    ## The KNN model is fitted with K = 22 has an average RMSE of 65113.89
