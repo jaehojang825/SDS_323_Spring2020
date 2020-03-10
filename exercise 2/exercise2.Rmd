@@ -142,7 +142,7 @@ The 65 AMG model is always fitted with a higher K value than the 350 trim model.
 
 ***
 
-# Linear Model
+### Linear Model
 
 The table below shows the rmse of the medium model vs my "hand built" model:
 
@@ -179,6 +179,51 @@ kable(data.frame(Medium_Model = colMeans(rmse_vals)[1], New_Model = colMeans(rms
 
 Compared to the medium model, the new model has a lower RMSE. The new model uses the equation:
 
-**Price = lotSize * livingArea + age + bathrooms:bedrooms   + roomSize  + waterfront + centralAir + newConstruction + landValue:lotSize + livingArea:waterfront + rooms + fireplaces:lotSize, data=saratoga_train)**
+**Price = lotSize * livingArea + age + bathrooms:bedrooms   + roomSize  + waterfront + centralAir + newConstruction + landValue:lotSize + livingArea:waterfront + rooms + fireplaces:lotSize, data=saratoga_train**
 
 To improve on the medium model I removed the variables: pct_college, heating, and fuel. I added the variables waterfront and newConstruction. NewConstruction was a big driver of price because home buyers value new properties more than one that has already been lived in. Homes being at a waterfront location was also big driver of price due to it being one of the most valued locations to have a house. In addition, I added a new variable called roomSize which was calculated by dividing the size of the house by the number of rooms. I also added multiple interactions which were strong drivers of price. For example, I added an interaction between bathrooms and bedrooms, because bathrooms connected to bedrooms is important to house buyers. 
+
+### KNN Model
+
+```{r warning=FALSE}
+
+data = SaratogaHouses %>% select(price,lotSize, livingArea, age, bathrooms, bedrooms, roomSize, rooms, waterfront, newConstruction, centralAir)
+
+# change categorical vars to dummy vars
+data$waterfront = ifelse(SaratogaHouses$waterfront == "Yes",1,0)
+data$newConstruction = ifelse(SaratogaHouses$newConstruction == "Yes",1,0)
+data$centralAir = ifelse(SaratogaHouses$centralAir == "Yes",1,0)
+
+x = data %>% select(-price)
+y = data %>% select(price)
+ 
+# Averages RMSE over 100 train/test splits for each k
+rmse_vals = foreach(K=3:50, .combine='c') %dopar% {
+  rmse_val = do (100) *{
+    train_cases = sample.int(n, n_train, replace=FALSE)
+    test_cases = setdiff(1:n, train_cases)
+    x_train = x[train_cases,]
+    x_test = x[-train_cases,]
+    y_train = y[train_cases,]
+    y_test = y[-train_cases,]
+    
+    scale_factors = apply(x_train, 2, sd)
+    x_train_sc = scale(x_train, scale=scale_factors)
+    x_test_sc = scale(x_test, scale=scale_factors)
+    knnModel = knn.reg(train=x_train_sc, test=x_test_sc, y = y_train, k=K)
+    rmse(y_test, knnModel$pred)
+  }
+  mean(rmse_val$result)
+}
+
+rmse_grid = data.frame(k=3:50, RMSE= rmse_vals)
+k = subset(rmse_grid, RMSE == min(rmse_vals))[1,1]
+ggplot(rmse_grid) +
+  geom_point(aes(k,RMSE)) +
+  ggtitle("RMSE vs K")
+```
+
+```{r}
+cat("The KNN model is fitted with K =",k, "has an average RMSE of", min(rmse_vals))
+```
+
