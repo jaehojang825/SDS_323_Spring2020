@@ -144,7 +144,7 @@ The 65 AMG model is always fitted with a higher K value than the 350 trim model.
 
 ### Linear Model
 
-The table below shows the rmse of the medium model vs my "hand built" model:
+The  first table below shows the rmse of the medium model vs my "hand built" model. The second table shows the coefficents for the new "hand built" model.
 
 ```{r echo=FALSE, warning=FALSE}
 data(SaratogaHouses)
@@ -175,6 +175,7 @@ rmse_vals = do(100)*{
 
 kable(data.frame(Medium_Model = colMeans(rmse_vals)[1], New_Model = colMeans(rmse_vals)[2]), row.names = FALSE, format="markdown", align = "c", caption = "Average RMSE for  in-class Medium Model vs New Model")
 
+kable(coef(lm_new), col.names = c("Coefficents"))
 ```
 
 Compared to the medium model, the new model has a lower RMSE. The new model uses the equation:
@@ -185,7 +186,9 @@ To improve on the medium model I removed the variables: pct_college, heating, an
 
 ### KNN Model
 
-```{r warning=FALSE}
+To fit a KNN model for Saratoga House Prices using the same variabes as the linear model, I first standardized the variables. Next I recoded the categorical variables (waterfront, newConstruction, and centralAir) to  dummy variables corresponding to 1 for yes and 0 for no. Finally to pick the parameter for the KNN model, the average rmse was calculated (over 100 train/test splits) for K values from 3 to 50. This resulted in the following rmse vs k scatterplot:
+
+```{r echo=FALSE, warning=FALSE}
 
 data = SaratogaHouses %>% select(price,lotSize, livingArea, age, bathrooms, bedrooms, roomSize, rooms, waterfront, newConstruction, centralAir)
 
@@ -222,8 +225,8 @@ ggplot(rmse_grid) +
   geom_point(aes(k,RMSE)) +
   ggtitle("RMSE vs K")
 ```
-
+After picking the K which resulted in the rmse,
 ```{r}
-cat("The KNN model is fitted with K =",k, "has an average RMSE of", min(rmse_vals))
+cat("The KNN model is fitted with K =",k, "and has an average RMSE of", min(rmse_vals))
 ```
 
