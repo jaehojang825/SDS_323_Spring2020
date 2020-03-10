@@ -25,11 +25,11 @@ the test sets. Below is a plot of RMSE vs K for each
 
 ![](exercise2_files/figure-gfm/unnamed-chunk-5-1.png)<!-- -->
 
-    The KNN model with the minimum RMSE is fitted with K = 18 for a trim level of 350.
+    The KNN model with the minimum RMSE is fitted with K = 38 for a trim level of 350.
 
 ![](exercise2_files/figure-gfm/unnamed-chunk-5-2.png)<!-- -->
 
-    The KNN model with the minimum RMSE is fitted with K = 13 for a trim level of 65 AMG.
+    The KNN model with the minimum RMSE is fitted with K = 4 for a trim level of 65 AMG.
 
 Now that we have fitted each model with a K parameter which minimizes
 RMSE, we can plot both models over its corresponding test data to
@@ -57,22 +57,31 @@ Prices**
 
 -----
 
+# Linear Model
+
+The table below shows the rmse of the medium model vs my “hand built”
+model:
+
 | Medium\_Model | New\_Model |
 | :-----------: | :--------: |
-|   67421.93    |  65920.03  |
+|   66614.64    |  65323.39  |
 
-The above table shows the root mean square error for the medium model
-created in class vs the RMSE for my model. Compared to the medium model,
-the new model has a lower RMSE.The new model uses the
-    equation:
+Compared to the medium model, the new model has a lower RMSE. The new
+model uses the equation:
 
-    ##             (Intercept)                 lotSize              livingArea 
-    ##            9.081022e+04            5.142335e+03            1.936180e+02 
-    ##                     age                bedrooms                roomSize 
-    ##           -9.183852e+01           -1.231435e+04           -9.464472e+01 
-    ##            waterfrontNo            centralAirNo       newConstructionNo 
-    ##           -4.631412e+04           -2.048070e+04            2.255443e+04 
-    ##      lotSize:livingArea       lotSize:bathrooms       lotSize:landValue 
-    ##           -2.869637e+01            1.903312e+04            3.919823e-01 
-    ## livingArea:waterfrontNo      lotSize:fireplaces 
-    ##           -6.669535e+01           -3.289907e+03
+**Price = lotSize \* livingArea + age + bathrooms:bedrooms + roomSize +
+waterfront + centralAir + newConstruction + landValue:lotSize +
+livingArea:waterfront + rooms + fireplaces:lotSize,
+data=saratoga\_train)**
+
+To improve on the medium model I removed the variables: pct\_college,
+heating, and fuel. I added the variables waterfront and newConstruction.
+NewConstruction was a big driver of price because home buyers value new
+properties more than one that has already been lived in. Homes being at
+a waterfront location was also big driver of price due to it being one
+of the most valued locations to have a house. In addition, I added a new
+variable called roomSize which was calculated by dividing the size of
+the house by the number of rooms. I also added multiple interactions
+which were strong drivers of price. For example, I added an interaction
+between bathrooms and bedrooms, because bathrooms connected to bedrooms
+is important to house buyers.
